@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import './Banner.css';
+import requests from '../Requests';
+import axios from '../axios';
 
-export const Banner = () => {
+function Banner(){
+    const[movie,setMovie]= useState([]);
+
+    useEffect(()=>{
+        async function fetchData(){
+            const request =await axios.get(requests.fetchNetflixOriginals);
+            setMovie(
+                request.data.results[
+                Math.floor(Math.random()*request.data.results.length-1)
+            ]
+        );
+        return request;
+        }
+
+        fetchData();
+    },[]
+    );
+    console.log(movie);
+    
     function truncate(string,n){
         return string?.length > n ? string.substr(0,n-1)+'...':string;
     
@@ -10,19 +30,21 @@ export const Banner = () => {
     <header className='banner'
         style={{
             backgroundSize:"cover",
-            backgroundImage:`url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Black_flag.svg/800px-Black_flag.svg.png")`,
+            backgroundImage:`url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
             backgroundPosition:"center center",
         }}>
             <div className="banner_content">
-                <h1 className="banner_title">Movie Name</h1>
+                <h1 className="banner_title">{movie?.title || movie?.name || movie?.original_name}</h1>
                 <div className="banner_buttons">
                     <button className='banner_button'>Play</button>
                     <button className='banner_button'>My List</button>
                 </div>
-                <h1 className="banner_description">{truncate(`This is a test descriptionhasfhiuafiacicbsacb asuhfuiac dchbiddc zdsiuafuiaz dbcizcbzc asciabcidac zhcizczd Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem nostrum, rerum quaerat, recusandae dolor laboriosam, perferendis tenetur iste modi minima quas earum? Quasi, nihil enim repudiandae animi ipsum consectetur praesentiumb Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit odio, repudiandae quibusdam esse beatae delectus neque officiis omnis facilis eveniet magni enim sapiente praesentium amet eaque illo ad! Est, amet`,250)}</h1>
+                <h1 className="banner_description">{truncate(movie?.overview,250)}</h1>
                 
             </div>
             <div className="banner_fadeBottom"></div>
         </header>
+
   )
 }
+export default Banner

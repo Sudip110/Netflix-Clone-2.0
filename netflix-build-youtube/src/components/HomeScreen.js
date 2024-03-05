@@ -39,10 +39,11 @@ const HomeScreen = () => {
         title="Romance Movies"
         fetchUrl={requests.fetchRomanceMovies}
         />
-        <Row 
-        title="Documentries"
-        fetchUrl={requests.fetchDocumentries}
+                <Row 
+        title="Documentaries"
+        fetchUrl={requests.fetchDocumentaries}
         />
+        
     </div>
 
   )
